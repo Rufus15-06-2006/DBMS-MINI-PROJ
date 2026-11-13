@@ -1,0 +1,39 @@
+digraph HospitalSupplyChain {
+  graph [rankdir=LR, bgcolor="white", pad="0.25", nodesep="0.45", ranksep="0.8", splines=polyline, fontname="Arial", labelloc=t, label="HOSPITAL SUPPLY CHAIN MANAGEMENT SYSTEM — RELATIONAL ER DIAGRAM", fontsize=20];
+  node [shape=plain, fontname="Arial", fontsize=10];
+  edge [fontname="Arial", fontsize=9, color="#526579", arrowsize=0.7];
+
+  departments [label=< <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="5"><TR><TD BGCOLOR="#154E78"><FONT COLOR="white"><B>DEPARTMENTS</B></FONT></TD></TR><TR><TD ALIGN="LEFT"><B>PK</B> department_id</TD></TR><TR><TD ALIGN="LEFT">name (unique)</TD></TR><TR><TD ALIGN="LEFT">location</TD></TR></TABLE> >];
+  suppliers [label=< <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="5"><TR><TD BGCOLOR="#154E78"><FONT COLOR="white"><B>SUPPLIERS</B></FONT></TD></TR><TR><TD ALIGN="LEFT"><B>PK</B> supplier_id</TD></TR><TR><TD ALIGN="LEFT">name, contact_name</TD></TR><TR><TD ALIGN="LEFT">email, phone, active</TD></TR></TABLE> >];
+  products [label=< <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="5"><TR><TD BGCOLOR="#154E78"><FONT COLOR="white"><B>PRODUCTS</B></FONT></TD></TR><TR><TD ALIGN="LEFT"><B>PK</B> product_id</TD></TR><TR><TD ALIGN="LEFT">name, category, unit</TD></TR><TR><TD ALIGN="LEFT">unit_cost, criticality</TD></TR></TABLE> >];
+  warehouses [label=< <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="5"><TR><TD BGCOLOR="#154E78"><FONT COLOR="white"><B>WAREHOUSES</B></FONT></TD></TR><TR><TD ALIGN="LEFT"><B>PK</B> warehouse_id</TD></TR><TR><TD ALIGN="LEFT">name (unique)</TD></TR><TR><TD ALIGN="LEFT">location, storage_type</TD></TR></TABLE> >];
+  users [label=< <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="5"><TR><TD BGCOLOR="#24734D"><FONT COLOR="white"><B>USERS</B></FONT></TD></TR><TR><TD ALIGN="LEFT"><B>PK</B> user_id</TD></TR><TR><TD ALIGN="LEFT">username, full_name, role</TD></TR><TR><TD ALIGN="LEFT">password_hash (scrypt)</TD></TR><TR><TD ALIGN="LEFT"><B>FK</B> department_id (nullable)</TD></TR></TABLE> >];
+  inventory [label=< <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="5"><TR><TD BGCOLOR="#24734D"><FONT COLOR="white"><B>INVENTORY</B></FONT></TD></TR><TR><TD ALIGN="LEFT"><B>PK/FK</B> product_id</TD></TR><TR><TD ALIGN="LEFT"><B>PK/FK</B> warehouse_id</TD></TR><TR><TD ALIGN="LEFT">quantity, reorder_level</TD></TR></TABLE> >];
+  batches [label=< <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="5"><TR><TD BGCOLOR="#24734D"><FONT COLOR="white"><B>BATCHES</B></FONT></TD></TR><TR><TD ALIGN="LEFT"><B>PK</B> batch_id</TD></TR><TR><TD ALIGN="LEFT"><B>FK</B> product_id, warehouse_id</TD></TR><TR><TD ALIGN="LEFT">batch_number, quantity</TD></TR><TR><TD ALIGN="LEFT">expiry_date, received_at</TD></TR></TABLE> >];
+  purchase_orders [label=< <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="5"><TR><TD BGCOLOR="#154E78"><FONT COLOR="white"><B>PURCHASE_ORDERS</B></FONT></TD></TR><TR><TD ALIGN="LEFT"><B>PK</B> order_id</TD></TR><TR><TD ALIGN="LEFT"><B>FK</B> supplier_id</TD></TR><TR><TD ALIGN="LEFT">order_date, expected_date</TD></TR><TR><TD ALIGN="LEFT">received_date, status</TD></TR></TABLE> >];
+  order_items [label=< <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="5"><TR><TD BGCOLOR="#24734D"><FONT COLOR="white"><B>ORDER_ITEMS</B></FONT></TD></TR><TR><TD ALIGN="LEFT"><B>PK</B> order_item_id</TD></TR><TR><TD ALIGN="LEFT"><B>FK</B> order_id, product_id</TD></TR><TR><TD ALIGN="LEFT">quantity_ordered/received</TD></TR><TR><TD ALIGN="LEFT">unit_price</TD></TR></TABLE> >];
+  stock_movements [label=< <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="5"><TR><TD BGCOLOR="#24734D"><FONT COLOR="white"><B>STOCK_MOVEMENTS</B></FONT></TD></TR><TR><TD ALIGN="LEFT"><B>PK</B> movement_id</TD></TR><TR><TD ALIGN="LEFT"><B>FK</B> product_id, batch_id</TD></TR><TR><TD ALIGN="LEFT"><B>FK</B> source_warehouse_id</TD></TR><TR><TD ALIGN="LEFT"><B>FK</B> destination_department_id</TD></TR><TR><TD ALIGN="LEFT"><B>FK</B> destination_warehouse_id</TD></TR><TR><TD ALIGN="LEFT">quantity, type, timestamp</TD></TR></TABLE> >];
+  stock_alerts [label=< <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="5"><TR><TD BGCOLOR="#A75A22"><FONT COLOR="white"><B>STOCK_ALERTS</B></FONT></TD></TR><TR><TD ALIGN="LEFT"><B>PK</B> alert_id</TD></TR><TR><TD ALIGN="LEFT"><B>FK</B> product_id</TD></TR><TR><TD ALIGN="LEFT"><B>FK</B> warehouse_id (nullable)</TD></TR><TR><TD ALIGN="LEFT">alert_type, message</TD></TR><TR><TD ALIGN="LEFT">created_at, resolved_at</TD></TR></TABLE> >];
+  emergency_requests [label=< <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="5"><TR><TD BGCOLOR="#A75A22"><FONT COLOR="white"><B>EMERGENCY_REQUESTS</B></FONT></TD></TR><TR><TD ALIGN="LEFT"><B>PK</B> request_id</TD></TR><TR><TD ALIGN="LEFT"><B>FK</B> product_id, department_id</TD></TR><TR><TD ALIGN="LEFT"><B>FK</B> order_id (nullable)</TD></TR><TR><TD ALIGN="LEFT">quantity_needed, status, reason</TD></TR></TABLE> >];
+  mongo [shape=box, style="rounded,filled", fillcolor="#E8F5E9", color="#24734D", margin="0.15", label="MONGODB: audit_events\nFlexible event documents\nevent_type, product_id, quantity, shortfall,\nallocations[], actor, role, timestamp, metadata{}"];
+
+  departments -> users [label="1 : M"];
+  departments -> stock_movements [label="1 : M", constraint=false];
+  suppliers -> purchase_orders [label="1 : M"];
+  purchase_orders -> order_items [label="1 : M"];
+  products -> order_items [label="1 : M"];
+  products -> inventory [label="1 : M"];
+  warehouses -> inventory [label="1 : M"];
+  products -> batches [label="1 : M"];
+  warehouses -> batches [label="1 : M"];
+  products -> stock_movements [label="1 : M", constraint=false];
+  batches -> stock_movements [label="1 : M", constraint=false];
+  warehouses -> stock_movements [label="1 : M", constraint=false];
+  products -> stock_alerts [label="1 : M", constraint=false];
+  warehouses -> stock_alerts [label="1 : M (nullable)", constraint=false];
+  products -> emergency_requests [label="1 : M", constraint=false];
+  departments -> emergency_requests [label="1 : M (nullable)", constraint=false];
+  purchase_orders -> emergency_requests [label="1 : M (nullable)", constraint=false];
+  warehouses -> stock_movements [label="destination (TRANSFER/RECEIPT)", constraint=false, style=dotted];
+  stock_movements -> mongo [style=dashed, label="event copied after SQL commit", color="#24734D"];
+}

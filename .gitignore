@@ -1,0 +1,25 @@
+# Dependencies and generated build output
+node_modules/
+.next/
+out/
+coverage/
+test-results/
+
+# Local environment files (keep the safe example file)
+.env
+.env.*
+!.env.example
+
+# Logs and OS/editor files
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Local database exports and backups
+*.sql.gz
+*.dump
+*.sqlite
+*.db

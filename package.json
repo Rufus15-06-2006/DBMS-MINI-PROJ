@@ -1,0 +1,21 @@
+{
+  "name": "hospital-supply-chain-dbms",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "mongo:seed": "node mongodb/seed.js",
+    "hash-password": "node scripts/hash-password.mjs",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "mongodb": "^6.8.0",
+    "mysql2": "^3.11.0",
+    "next": "^14.2.15",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  }
+}
